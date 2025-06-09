@@ -70,10 +70,4 @@ A base `Obesity.csv` inclui variáveis como:
 
 ## 🧠 Créditos
 
-Desenvolvido como parte do Tech Challenge da Pós Tech pelos colegas:
-
-Rodrigo da Silva
-Paulo Henrique Santana Silva
-Thiago Jardim de Andrade
-Tatiane Maria Ramos
-Eduardo Patrocina Soares Teixeira
+Desenvolvido como parte do Tech Challenge da Pós Tech pelos colegas: Rodrigo da Silva, Paulo Henrique Santana Silva, Thiago Jardim de Andrade, Tatiane Maria Ramos e Eduardo Patrocina Soares Teixeira
