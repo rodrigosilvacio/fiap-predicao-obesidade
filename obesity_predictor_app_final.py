@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seab as sns
+import seaborn as sns
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
