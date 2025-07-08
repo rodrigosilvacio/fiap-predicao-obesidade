@@ -8,6 +8,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
+st.set_page_config(page_title="Previsor de Obesidade", layout="wide")
 
 # ======= Treinamento do Modelo (Pipeline completo) =======
 @st.cache_resource
@@ -42,29 +43,58 @@ modelo_pipeline = treinar_pipeline()
 joblib.dump(modelo_pipeline, "random_forest_obesity_model.pkl")
 
 # ======= Interface do App =======
-st.set_page_config(page_title="Previsor de Obesidade", layout="wide")
+
 st.title("🩺 Sistema Preditivo e Analítico de Obesidade")
 
 st.markdown("Preencha os dados abaixo para obter uma previsão do nível de obesidade.")
 
 # Entradas do usuário
 with st.form("obesity_form"):
-    gender = st.selectbox("Gênero", ["Male", "Female"])
+    genero_pt = st.selectbox("Gênero", ["Masculino", "Feminino"])
+    dic_genero = {'Masculino' : 'Male','Feminino' : 'Female'}
+    gender = dic_genero[genero_pt]
+
     age = st.slider("Idade", 10, 100, 25)
     height = st.number_input("Altura (m)", min_value=1.0, max_value=2.5, step=0.01)
     weight = st.number_input("Peso (kg)", min_value=30.0, max_value=200.0, step=0.1)
-    family_history = st.selectbox("Histórico familiar de sobrepeso?", ["yes", "no"])
-    favc = st.selectbox("Come alimentos muito calóricos com frequência?", ["yes", "no"])
+
+    historico_pt = st.selectbox("Histórico familiar de sobrepeso?", ["sim", "não"]) 
+    dic_historico = {"sim" : "yes","não" : "no"}
+    family_history = dic_historico[historico_pt]
+ 
+    facv_pt = st.selectbox("Come alimentos muito calóricos com frequência?", ["sim", "não"])
+    dic_facv = {"sim" : "yes","não" : "no"}
+    favc = dic_facv[facv_pt]
+
     fcvc = st.slider("Frequência de vegetais na refeição (1-3)", 1.0, 3.0, 2.0)
     ncp = st.slider("Número de refeições principais por dia", 1.0, 4.0, 3.0)
-    caec = st.selectbox("Petisca entre as refeições?", ["no", "Sometimes", "Frequently", "Always"])
-    smoke = st.selectbox("Fuma?", ["yes", "no"])
+
+    caec_pt = st.selectbox("Petisca entre as refeições?", ["não", "as vezes", "frequentemente", "sempre"])
+    dic_caec = {"não" : "no","as vezes" : "Sometimes", "frequentemente" : "Frequently", "sempre" : "Always"}
+    caec = dic_caec[caec_pt]
+
+    fuma_pt = st.selectbox("Fuma?", ["sim", "não"])
+    dic_fuma = {"sim" : "yes","não" : "no"}
+    smoke = dic_fuma[fuma_pt]
+
     ch2o = st.slider("Quantidade de água por dia (litros)", 1.0, 3.0, 2.0)
-    scc = st.selectbox("Monitora calorias ingeridas?", ["yes", "no"])
+
+    scc_pt = st.selectbox("Monitora calorias ingeridas?", ["sim", "não"])
+    dic_scc = {"sim" : "yes","não" : "no"}
+    scc = dic_scc[scc_pt]
+
+
     faf = st.slider("Frequência de atividade física (horas/semana)", 0.0, 5.0, 1.0)
     tue = st.slider("Tempo de tela diário (horas)", 0.0, 5.0, 1.0)
-    calc = st.selectbox("Consumo de álcool", ["no", "Sometimes", "Frequently", "Always"])
-    mtrans = st.selectbox("Meio de transporte", ["Public_Transportation", "Walking", "Automobile", "Motorbike", "Bike"])
+
+    calc_pt = st.selectbox("Consumo de álcool", ["não", "as vezes", "frequentemente", "sempre"])
+    dic_calc = {"não" : "no","as vezes" : "Sometimes", "frequentemente" : "Frequently", "sempre" : "Always"}
+    calc = dic_calc[calc_pt]
+
+    m_trans_pt = st.selectbox("Meio de transporte", ["transporte público", "caminhada", "automóvel", "motocicleta", "bicicleta"])
+    dic_m_trans = {"transporte público" : "Public_Transportation","caminhada" : "Walking", "automóvel" : "Automobile", "motocicleta" : "Motorbike", "bicicleta" : "Bike"}
+    mtrans = dic_m_trans[m_trans_pt]
+
 
     submitted = st.form_submit_button("Prever")
 
@@ -89,35 +119,14 @@ with st.form("obesity_form"):
         }
         input_df = pd.DataFrame([input_dict])
         pred = modelo_pipeline.predict(input_df)[0]
-        st.success(f"Nível de obesidade previsto: **{pred}**")
+        dic_pred = {
+                "Normal_Weight": "Peso Normal",
+                "Insufficient_Weight": "Peso Insuficiente",
+                "Obesity_Type_I": "Obesidade Tipo I",
+                "Obesity_Type_II": "Obesidade Tipo II",
+                "Obesity_Type_III": "Obesidade Tipo III",
+                "Overweight_Level_I": "Sobrepeso Nível I",
+                "Overweight_Level_II": "Sobrepeso Nível II"
+}
+        st.success(f"Nível de obesidade previsto: **{dic_pred[pred]}**")
 
-# Seção de Insights Analíticos
-st.markdown("---")
-st.header("📊 Painel Analítico sobre Obesidade")
-
-@st.cache_data
-def load_data():
-    df = pd.read_csv("Obesity.csv")
-    return df
-
-df = load_data()
-
-st.subheader("Distribuição de Obesidade por Gênero")
-graph_data = df.groupby(["Gender", "Obesity"]).size().unstack().fillna(0)
-graph_data.T.plot(kind="bar", stacked=True, figsize=(10,5))
-plt.xlabel("Nível de Obesidade")
-plt.ylabel("Contagem")
-st.pyplot(plt.gcf())
-
-st.subheader("Média de Peso por Categoria de Obesidade")
-peso_media = df.groupby("Obesity")["Weight"].mean().sort_values()
-peso_media.plot(kind="barh")
-plt.xlabel("Peso Médio (kg)")
-plt.ylabel("Categoria de Obesidade")
-st.pyplot(plt.gcf())
-
-st.subheader("Matriz de Correlação entre Variáveis Numéricas")
-corr = df.select_dtypes(include=[np.number]).corr()
-plt.figure(figsize=(10,6))
-sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f")
-st.pyplot(plt.gcf())
