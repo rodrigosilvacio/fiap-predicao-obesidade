@@ -14,6 +14,7 @@ A solução foi construída como parte do Tech Challenge - Fase 4 (Data Analytic
 ## 📁 Estrutura do Projeto
 
 - `obesity_predictor_app_final.py`: aplicação completa em Streamlit
+- 'painel_analitico_final.py': painel analitico do projeto
 - `Obesity.csv`: base de dados utilizada para treinamento e análise
 - `requirements.txt`: lista de dependências para execução
 - `README.md`: este arquivo :)
@@ -36,6 +37,7 @@ pip install -r requirements.txt
 3. Execute o aplicativo:
 ```bash
 streamlit run obesity_predictor_app_final.py
+streamlit run painel_analitico_final.py
 ```
 
 ---
@@ -45,6 +47,7 @@ streamlit run obesity_predictor_app_final.py
 O app pode ser executado diretamente no navegador via:
 ```
 https://seu-usuario.streamlit.app/obesity-predictor
+https://seu-usuario.streamlit.app/painel_analitico_final
 ```
 
 ---
@@ -70,4 +73,9 @@ A base `Obesity.csv` inclui variáveis como:
 
 ## 🧠 Créditos
 
-Desenvolvido como parte do Tech Challenge da Pós Tech pelos colegas: Rodrigo da Silva, Paulo Henrique Santana Silva, Thiago Jardim de Andrade, Tatiane Maria Ramos e Eduardo Patrocina Soares Teixeira
+Desenvolvido como parte do Tech Challenge da Pós Tech pelos colegas: 
+- Rodrigo da Silva
+- Paulo Henrique Santana Silva
+- Thiago Jardim de Andrade
+- Tatiane Maria Ramos
+- Eduardo Patrocina Soares Teixeira
