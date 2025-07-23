@@ -14,7 +14,7 @@ A solução foi construída como parte do Tech Challenge - Fase 4 (Data Analytic
 ## 📁 Estrutura do Projeto
 
 - `obesity_predictor_app_final.py`: aplicação completa em Streamlit
-- 'painel_analitico_final.py': painel analitico do projeto
+- `painel_analitico_final.py`: painel analitico do projeto
 - `Obesity.csv`: base de dados utilizada para treinamento e análise
 - `requirements.txt`: lista de dependências para execução
 - `README.md`: este arquivo :)
